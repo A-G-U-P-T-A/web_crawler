@@ -31,7 +31,9 @@ public class IndianExpressWebCrawler extends WebCrawler {
         return !EXCLUSIONS.matcher(urlString).matches() && urlString.startsWith(baseUrl);
     }
     @Override public void visit(Page page) {
-        indianExpressWebUrlRepositories.insert(new IndianExpressWebUrl(page.getWebURL().getURL() , page.getWebURL().getPath(), true, page.getWebURL().getDepth()));
+        IndianExpressWebUrl indianExpressWebUrl = indianExpressWebUrlRepositories.findOne(page.getWebURL().getURL());
+        if(indianExpressWebUrl==null)
+            indianExpressWebUrlRepositories.insert(new IndianExpressWebUrl(page.getWebURL().getURL() , page.getWebURL().getPath(), true, page.getWebURL().getDepth()));
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String title = htmlParseData.getTitle();
@@ -39,8 +41,10 @@ public class IndianExpressWebCrawler extends WebCrawler {
             String html = htmlParseData.getHtml();
             Set<WebURL> webURLS = htmlParseData.getOutgoingUrls();
             for (WebURL webURL:webURLS) {
-                if(!EXCLUSIONS.matcher(webURL.getURL()).matches())
-                    indianExpressWebUrlRepositories.insert(new IndianExpressWebUrl(webURL.getURL() , webURL.getPath(), false, webURL.getDepth()));
+                IndianExpressWebUrl indianExpressSubWebUrl = indianExpressWebUrlRepositories.findOne(webURL.getURL());
+                if(indianExpressSubWebUrl==null)
+                    if(!EXCLUSIONS.matcher(webURL.getURL()).matches())
+                        indianExpressWebUrlRepositories.insert(new IndianExpressWebUrl(webURL.getURL() , webURL.getPath(), true, webURL.getDepth()));
             }
             List<Object> content = Arrays.asList(title, text, html, webURLS);
             indianExpressWebContentRepositories.insert(new IndianExpressWebContent(page.getWebURL().getURL(), page.getWebURL().getPath(), content, page.getWebURL().getDepth()));

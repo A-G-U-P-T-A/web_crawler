@@ -13,4 +13,4 @@ cd target directory
 
 **Sample Run Command**
 
-java -jar service-0.0.1.jar moneycontrol true 
+java -jar target/service-0.0.1.jar moneycontrol true 

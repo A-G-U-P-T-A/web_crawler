@@ -29,8 +29,8 @@ public class MoneyControlWebCrawler extends WebCrawler {
         return !EXCLUSIONS.matcher(urlString).matches() && urlString.startsWith(baseUrl);
     }
     @Override public void visit(Page page) {
-        MoneyControlWebUrl moneyControlWebUrl = moneyControlWebUrlRepositories.findOne(page.getWebURL().getURL());
-        if(moneyControlWebUrl==null)
+        //MoneyControlWebUrl moneyControlWebUrl = moneyControlWebUrlRepositories.findOne(page.getWebURL().getURL());
+        //if(moneyControlWebUrl==null)
             moneyControlWebUrlRepositories.insert(new MoneyControlWebUrl(page.getWebURL().getURL() , page.getWebURL().getPath(), true, page.getWebURL().getDepth()));
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
@@ -38,12 +38,12 @@ public class MoneyControlWebCrawler extends WebCrawler {
             String text = htmlParseData.getText();
             String html = htmlParseData.getHtml();
             Set<WebURL> webURLS = htmlParseData.getOutgoingUrls();
-            for (WebURL webURL:webURLS) {
-                MoneyControlWebUrl moneyControlSubWebUrl = moneyControlWebUrlRepositories.findOne(webURL.getURL());
-                if(moneyControlSubWebUrl==null)
-                    if(!EXCLUSIONS.matcher(webURL.getURL()).matches())
-                        moneyControlWebUrlRepositories.insert(new MoneyControlWebUrl(webURL.getURL() , webURL.getPath(), true, webURL.getDepth()));
-            }
+            //for (WebURL webURL:webURLS) {
+                //MoneyControlWebUrl moneyControlSubWebUrl = moneyControlWebUrlRepositories.findOne(webURL.getURL());
+                //if(moneyControlSubWebUrl==null)
+                    //if(!EXCLUSIONS.matcher(webURL.getURL()).matches())
+                        //moneyControlWebUrlRepositories.insert(new MoneyControlWebUrl(webURL.getURL() , webURL.getPath(), true, webURL.getDepth()));
+            //}
             List<Object>content = Arrays.asList(title, text, html, webURLS);
             moneyControlWebContentRepositories.insert(new MoneyControlWebContent(page.getWebURL().getURL(), page.getWebURL().getPath(), content, page.getWebURL().getDepth()));
         }

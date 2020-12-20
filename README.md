@@ -5,7 +5,11 @@ Install mongo db locally and create crawler db.
 
 **Build Jar**
 
+cd into the directory
+
 mvn clean install
+
+cd target directory
 
 **Sample Run Command**
 
